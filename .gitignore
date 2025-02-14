@@ -1,0 +1,6 @@
+
+CMakeLists.txt.user*
+*.qmlls.ini
+/testApp/build/
+/testPlugin/build/
+/plugin-export_*
