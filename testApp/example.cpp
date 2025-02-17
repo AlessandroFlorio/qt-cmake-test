@@ -8,7 +8,7 @@ int main(int argc, char * argv[])
 
     QQmlApplicationEngine engine;
     engine.addImportPath(QStringLiteral(PLUGIN_IMPORT_PATH));
-
+    engine.addImportPath(":/");
     const QUrl url(QStringLiteral("qrc:/example.qml"));
     engine.load(url);
 

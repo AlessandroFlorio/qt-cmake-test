@@ -20,7 +20,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Quick)
 qt_standard_project_setup(REQUIRES 6.8)
 
 
-set(LIBRARY_NAME "test-plugin")
+# set(LIBRARY_NAME "test-plugin")
 set(TARGET_NAME "Tol")
 set(PLUGIN_URI "TOL")
 
@@ -28,7 +28,7 @@ qt_add_library(${TARGET_NAME} SHARED)
 
 qt_add_qml_module(${TARGET_NAME}
     URI ${PLUGIN_URI}
-    PLUGIN_TARGET ${LIBRARY_NAME}
+    PLUGIN_TARGET Tol #${LIBRARY_NAME}
     CLASS_NAME MyItem
     SOURCES myitem.cpp myitem.h testimageprovider.h testimageprovider.cpp
     RESOURCE_PREFIX /
