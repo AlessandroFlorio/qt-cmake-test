@@ -20,8 +20,8 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Quick)
 qt_standard_project_setup(REQUIRES 6.8)
 
 
-set(LIBRARY_NAME "test-plugin")
 set(TARGET_NAME "Tol")
+set(LIBRARY_NAME ${TARGET_NAME})
 set(PLUGIN_URI "TOL")
 
 qt_add_library(${TARGET_NAME} SHARED)
