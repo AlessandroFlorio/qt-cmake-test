@@ -35,6 +35,7 @@ qt_add_qml_module(${TARGET_NAME}
     PLUGIN_TARGET ${TARGET_NAME}
     CLASS_NAME MyItem
     SOURCES myitem.cpp myitem.h testimageprovider.h testimageprovider.cpp testelement.h testelement.cpp
+    QML_FILES TestQmlElement.qml
     RESOURCE_PREFIX /
     ${LIB_BUILD_TYPE}
     NO_PLUGIN_OPTIONAL
