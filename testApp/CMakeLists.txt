@@ -30,7 +30,7 @@ qt_add_qml_module(${TARGET_NAME}
     NO_RESOURCE_TARGET_PATH
 )
 
-if (IOS)
+if(IOS)
     set(EXPORT_PATH "plugin-export_ios")
 elseif(ANDROID)
     set(EXPORT_PATH "plugin-export_android")
@@ -44,6 +44,8 @@ set(PLUGIN_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../${EXPORT_PATH}")
 target_compile_definitions(${TARGET_NAME} PRIVATE
     PLUGIN_IMPORT_PATH="${PLUGIN_PATH}"
 )
+SET(QML_IMPORT_PATH "${PLUGIN_PATH}" CACHE STRING "qml modules path")
+
 
 # Avoid collision between executable name and QML module directory (QTBUG-98568).
 if(NOT WIN32 AND NOT APPLE)
@@ -56,4 +58,27 @@ if (ANDROID)
     add_library(TolLib SHARED IMPORTED)
     set_property(TARGET TolLib PROPERTY IMPORTED_LOCATION "${PLUGIN_PATH}/TOL/libqml_TOL_Tol_${ANDROID_ABI}.so")
     target_link_libraries(${TARGET_NAME} PRIVATE TolLib)
+elseif(IOS)
+    qt_add_ios_ffmpeg_libraries(${TARGET_NAME})
+
+    set_target_properties(${TARGET_NAME} PROPERTIES
+        MACOSX_BUNDLE_GUI_IDENTIFIER info.tol.smartIO
+        MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+        MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+        MACOSX_BUNDLE TRUE
+        WIN32_EXECUTABLE TRUE
+    )
+
+    target_link_libraries(${TARGET_NAME} PRIVATE "-framework UIKit")
+
+    # link plugin library
+    target_link_directories(${TARGET_NAME} PUBLIC
+        ${PLUGIN_PATH}/TOL
+    )
+    set(libName "Tol")
+    if(CMAKE_BUILD_TYPE STREQUAL Debug)
+        set(libName "${libName}_debug")
+    endif()
+    set(libName "lib${libName}.a")
+    target_link_libraries(${TARGET_NAME} PRIVATE ${libName})
 endif()

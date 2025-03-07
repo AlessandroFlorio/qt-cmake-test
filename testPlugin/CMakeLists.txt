@@ -23,7 +23,12 @@ qt_standard_project_setup(REQUIRES 6.8)
 set(TARGET_NAME "Tol")
 set(PLUGIN_URI "TOL")
 
-qt_add_library(${TARGET_NAME} SHARED)
+if(IOS)
+    set(CMAKE_AUTOMOC_MOC_OPTIONS -Muri=${PLUGIN_URI})
+    set(LIB_BUILD_TYPE STATIC)
+else()
+    qt_add_library(${TARGET_NAME} SHARED)
+endif()
 
 qt_add_qml_module(${TARGET_NAME}
     URI ${PLUGIN_URI}
@@ -31,6 +36,7 @@ qt_add_qml_module(${TARGET_NAME}
     CLASS_NAME MyItem
     SOURCES myitem.cpp myitem.h testimageprovider.h testimageprovider.cpp testelement.h testelement.cpp
     RESOURCE_PREFIX /
+    ${LIB_BUILD_TYPE}
     NO_PLUGIN_OPTIONAL
     NO_GENERATE_PLUGIN_SOURCE
 )
@@ -46,6 +52,13 @@ elseif(WIN32)
     set(EXPORT_PATH "plugin-export_windows")
 else()
     set(EXPORT_PATH "plugin-export_linux")
+endif()
+
+
+if(IOS)
+    target_compile_definitions(${TARGET_NAME} PRIVATE
+        REGISTER_STATIC_PLUGIN=qml_register_types_${PLUGIN_URI}
+    )
 endif()
 
 
