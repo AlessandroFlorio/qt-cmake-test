@@ -21,20 +21,18 @@ qt_standard_project_setup(REQUIRES 6.8)
 
 
 set(TARGET_NAME "Tol")
-set(LIBRARY_NAME ${TARGET_NAME})
 set(PLUGIN_URI "TOL")
 
 qt_add_library(${TARGET_NAME} SHARED)
 
 qt_add_qml_module(${TARGET_NAME}
     URI ${PLUGIN_URI}
-    PLUGIN_TARGET ${LIBRARY_NAME}
+    PLUGIN_TARGET ${TARGET_NAME}
     CLASS_NAME MyItem
-    SOURCES myitem.cpp myitem.h testimageprovider.h testimageprovider.cpp
+    SOURCES myitem.cpp myitem.h testimageprovider.h testimageprovider.cpp testelement.h testelement.cpp
     RESOURCE_PREFIX /
     NO_PLUGIN_OPTIONAL
     NO_GENERATE_PLUGIN_SOURCE
-    SOURCES testelement.h testelement.cpp
 )
 
 target_link_libraries(${TARGET_NAME} PRIVATE Qt6::Quick)
@@ -57,23 +55,11 @@ set(OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../${EXPORT_PATH}/${PLUGIN_URI}")
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory ${OUTPUT_DIR})
 
-if (ANDROID)
-    add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
-      COMMAND "${CMAKE_COMMAND}" -E copy
-         "$<TARGET_FILE:${TARGET_NAME}>"
-         "${OUTPUT_DIR}"
-      COMMENT "Copying library to output directory")
-else()
-    add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
-      COMMAND "${CMAKE_COMMAND}" -E copy
-         "$<TARGET_FILE:${TARGET_NAME}>"
-         "${OUTPUT_DIR}/$<TARGET_FILE_PREFIX:${TARGET_NAME}>${LIBRARY_NAME}$<TARGET_FILE_SUFFIX:${TARGET_NAME}>"
-      COMMENT "Copying library to output directory")
-endif()
-
 add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
   COMMAND "${CMAKE_COMMAND}" -E copy
+     "$<TARGET_FILE:${TARGET_NAME}>"
      "${CMAKE_CURRENT_BINARY_DIR}/${PLUGIN_URI}/qmldir"
      "${CMAKE_CURRENT_BINARY_DIR}/${PLUGIN_URI}/${TARGET_NAME}.qmltypes"
      "${OUTPUT_DIR}"
-  COMMENT "Copying qml helper files to output directory")
+  COMMENT "Copying plugin files to output directory")
+

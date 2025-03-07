@@ -18,12 +18,13 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Quick)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
-qt_add_executable(ExampleProject example.cpp)
+set(TARGET_NAME "ExampleProject")
+qt_add_executable(${TARGET_NAME} example.cpp)
 
-target_link_libraries(ExampleProject PRIVATE Qt6::Quick)
+target_link_libraries(${TARGET_NAME} PRIVATE Qt6::Quick)
 
-qt_add_qml_module(ExampleProject
-    URI ExampleProject
+qt_add_qml_module(${TARGET_NAME}
+    URI ${TARGET_NAME}
     VERSION 1.0
     QML_FILES example.qml
     NO_RESOURCE_TARGET_PATH
@@ -39,22 +40,20 @@ else()
     set(EXPORT_PATH "plugin-export_linux")
 endif()
 
-set(PLUGIN_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../${EXPORT_PATH}/")
-target_compile_definitions(ExampleProject PRIVATE
+set(PLUGIN_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../${EXPORT_PATH}")
+target_compile_definitions(${TARGET_NAME} PRIVATE
     PLUGIN_IMPORT_PATH="${PLUGIN_PATH}"
 )
 
 # Avoid collision between executable name and QML module directory (QTBUG-98568).
 if(NOT WIN32 AND NOT APPLE)
-    set_property(TARGET ExampleProject PROPERTY OUTPUT_NAME ExampleProject_app)
+    set_property(TARGET ${TARGET_NAME} PROPERTY OUTPUT_NAME ${TARGET_NAME}_app)
 endif()
 
-target_link_libraries(ExampleProject PRIVATE Qt6::Quick)
 
-
-# CURRENT WORKAROUND TO LOAD THE LIBRARY FOR ANDROID (but plugin is not working)
 if (ANDROID)
+    # CURRENT WORKAROUND TO LOAD THE LIBRARY FOR ANDROID
     add_library(TolLib SHARED IMPORTED)
     set_property(TARGET TolLib PROPERTY IMPORTED_LOCATION "${PLUGIN_PATH}/TOL/libqml_TOL_Tol_${ANDROID_ABI}.so")
-    target_link_libraries(ExampleProject PRIVATE TolLib)
+    target_link_libraries(${TARGET_NAME} PRIVATE TolLib)
 endif()
