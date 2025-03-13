@@ -4,3 +4,4 @@ CMakeLists.txt.user*
 /testApp/build/
 /testPlugin/build/
 /plugin-export_*
+/qml/

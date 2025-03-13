@@ -42,12 +42,10 @@ Window {
             text: "\n\nTest loading QML element from plugin (should show a red image):\n"
         }
 
-        // the following is commented because the app shows a black screen on iOS with the error "TestQmlElement is not a type"
-
-        //TestQmlElement {
-        //    height: 100
-        //    width: parent.width
-        //}
+        TestQmlElement {
+            height: 100
+            width: parent.width
+        }
 
     }
 }
