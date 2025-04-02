@@ -42,8 +42,8 @@ qt_add_qml_module(${TARGET_NAME}
     QML_FILES TestQmlElement.qml
     #RESOURCE_PREFIX /
 
-    #NO_PLUGIN_OPTIONAL
-    #NO_GENERATE_PLUGIN_SOURCE
+    NO_PLUGIN_OPTIONAL
+    NO_GENERATE_PLUGIN_SOURCE
 )
 
 target_link_libraries(${TARGET_NAME} PRIVATE Qt6::Quick)
