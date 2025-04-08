@@ -61,9 +61,9 @@ target_link_libraries(${TARGET_NAME} PRIVATE Qt6::Quick)
 
 
 if(IOS)
-    target_compile_definitions(${TARGET_NAME} PRIVATE
-       REGISTER_STATIC_PLUGIN=qml_register_types_${PLUGIN_URI}
-    )
+    #target_compile_definitions(${TARGET_NAME} PRIVATE
+    #    REGISTER_STATIC_PLUGIN=qml_register_types_${PLUGIN_URI}
+    #)
 endif()
 
 
